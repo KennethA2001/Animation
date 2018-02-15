@@ -1,0 +1,2 @@
+Press the space bar to change day and night
+Press Tab to turn rain on and off.
