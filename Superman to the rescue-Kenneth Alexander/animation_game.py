@@ -14,7 +14,7 @@ pygame.init()
 
 #Images
 superman = pygame.image.load("SupermanRoss.png")
-kenneth = pygame.image.load("New Piskel (2).png")
+kenneth = pygame.image.load("kenneth.png")
 
 # Window
 SIZE = (800, 600)
@@ -40,7 +40,6 @@ BLACK = (0,0,0)
 
 # Settings
 stormy = True
-
 def draw_cloud(loc, color):
     x = loc[0]
     y = loc[1]
@@ -74,7 +73,7 @@ for i in range(num_clouds):
     loc = [x, y]
     far_clouds.append(loc)
 
-is_raining = True
+is_raining = False
 
 ''' Make rain '''
 if is_raining:
@@ -131,12 +130,14 @@ def draw_bullet(loc):
 
     pygame.draw.rect(screen, YELLOW, [x, y, 5, 15])
 
+def draw_text(x,y):
+    screen.blit(kenneth, (x,y))
+
 # Lightning stuff
 lightning_prob = 300 # (higher is less frequent)
 lightning_timer = 0
 
 # Sound Effects
-pygame.mixer.music.load("sounds/rain.ogg")
 thunder = pygame.mixer.Sound("sounds/thunder.ogg")
 cat = pygame.mixer.Sound("sounds/rain.ogg")
 spaghet = pygame.mixer.Sound("sounds/music.ogg")
@@ -178,6 +179,12 @@ while not done:
 
     # Game logic
 
+    ''' move superman '''
+    if block_loc[0] < -40:
+        block_loc[0] = 840
+    if block_loc[0] > 840:
+        block_loc[0] = -40
+
     ''' move block and bullets'''
 
     block_loc[0] += vel[0]
@@ -218,9 +225,9 @@ while not done:
                 r[0] = random.randrange(0, 1000)
                 r[1] = random.randrange(-100, 0)
 
+
     ''' flash lighting '''
     if stormy:
-        
         if random.randrange(0, 150) == 0:
             lightning_timer = 5
             thunder.play()
@@ -228,6 +235,8 @@ while not done:
             lightning_timer -= 1
     
     # Drawing code
+    '''text'''
+    draw_text(0,400)
 
     '''block '''
     draw_block(block_loc)
@@ -248,7 +257,6 @@ while not done:
         screen.fill(BLUE)
         if not daytime:
             screen.fill(BLACK)
-            screen.blit(kenneth, (380,200))
 
 
 
@@ -282,9 +290,9 @@ while not done:
 
     ''' rain '''
     if is_raining:
-        cat.play()
         for r in rain:
             draw_raindrop(r)
+        cat.play()
     if not is_raining:
         pygame.mixer.music.stop
 
